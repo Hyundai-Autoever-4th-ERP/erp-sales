@@ -1,37 +1,27 @@
 # ERP Sales
 
-## 실행
+## 로컬 실행
 
-JDK 25와 Docker를 준비한 뒤 저장소 루트에서 실행합니다.
+JDK 25와 Docker가 필요합니다. 클론한 저장소에서 커밋 훅을 한 번 설정하세요.
+
+```sh
+git config --local core.hooksPath .githooks
+```
+
+로컬 DB를 켜고 앱을 실행하세요.
 
 ```sh
 docker compose up -d
 ./gradlew bootRun
 ```
 
-IntelliJ에서는 프로젝트 SDK와 Gradle JVM을 25로 설정하고 `SalesApplication`를 실행합니다. Windows 터미널에서는 `gradlew.bat bootRun`을 사용합니다.
+IntelliJ에서는 프로젝트 SDK와 Gradle JVM을 25로 설정하고 `SalesApplication`을 실행합니다. Windows 터미널에서는 `.\gradlew.bat bootRun`을 사용합니다.
 
 - 상태 확인 [Actuator Health](http://localhost:8085/actuator/health)
 - API 문서 [Swagger UI](http://localhost:8085/swagger-ui/index.html)
 - 테스트는 로컬 DB를 실행한 상태에서 `./gradlew test`로 확인합니다.
 
-## AWS 공용 개발 DB
-
-VPC 안에서 실행하는 서비스는 공용 PostgreSQL RDS의 `sales_db`에 TLS로 연결합니다. 하루 검증 환경은 **2026년 11월 27일 15:03 KST**에 삭제를 시작할 예정입니다.
-
-| Spring 환경변수 | 서버 설정 |
-| --- | --- |
-| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://<RDS 엔드포인트>:5432/sales_db?sslmode=require` |
-| `SPRING_DATASOURCE_USERNAME` | `sales_app` |
-| `SPRING_DATASOURCE_PASSWORD` | 인프라 담당자가 별도로 전달하는 서비스 전용 비밀번호 |
-
-현재 Jenkins EC2에서 RDS로 연결되는 경로를 확인했습니다. 개발자 PC에서 공용 DB를 조회할 때는 이 EC2를 경유하는 SSM 포트 포워딩을 사용합니다.
-
-## 내 PC에서 개발할 때
-
-클론 후 이 저장소에서 한 번만 `git config --local core.hooksPath .githooks`를 실행하면 커밋 제목을 팀 규칙에 맞춰 검사합니다. 예: `feat: 재고 조회 기능 구현`.
-
-저장소를 클론한 뒤 루트에서 `docker compose up -d`를 실행하면 로컬 개발 DB가 시작됩니다.
+## 로컬 DB 접속
 
 | 접속 항목 | 값 |
 | --- | --- |
@@ -41,7 +31,3 @@ VPC 안에서 실행하는 서비스는 공용 PostgreSQL RDS의 `sales_db`에 T
 | 로컬 비밀번호 | `sales_local` |
 
 `docker compose down`으로 종료해도 데이터는 볼륨에 남습니다.
-
-## Jenkins CI
-
-`main`과 `develop` 빌드는 임시 PostgreSQL 컨테이너에서 DB 연결을 검사합니다. 같은 임시 DB로 Gradle 테스트와 빌드를 실행하고 빌드가 끝나면 정리합니다.
