@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: erp-sales
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:${POSTGRES_PORT:15435}/sales_db}
+    username: ${SPRING_DATASOURCE_USERNAME:sales_app}
+    password: ${SPRING_DATASOURCE_PASSWORD:sales_local}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: ${SERVER_PORT:8085}

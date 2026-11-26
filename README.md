@@ -1,5 +1,20 @@
 # ERP Sales
 
+## 실행
+
+JDK 25와 Docker를 준비한 뒤 저장소 루트에서 실행합니다.
+
+```sh
+docker compose up -d
+./gradlew bootRun
+```
+
+IntelliJ에서는 프로젝트 SDK와 Gradle JVM을 25로 설정하고 `SalesApplication`를 실행합니다. Windows 터미널에서는 `gradlew.bat bootRun`을 사용합니다.
+
+- 상태 확인 [Actuator Health](http://localhost:8085/actuator/health)
+- API 문서 [Swagger UI](http://localhost:8085/swagger-ui/index.html)
+- 테스트는 로컬 DB를 실행한 상태에서 `./gradlew test`로 확인합니다.
+
 ## AWS 공용 개발 DB
 
 VPC 안에서 실행하는 서비스는 공용 PostgreSQL RDS의 `sales_db`에 TLS로 연결합니다. 하루 검증 환경은 **2026년 11월 27일 15:03 KST**에 삭제를 시작할 예정입니다.
@@ -29,4 +44,4 @@ VPC 안에서 실행하는 서비스는 공용 PostgreSQL RDS의 `sales_db`에 T
 
 ## Jenkins CI
 
-`main`과 `develop` 빌드는 임시 PostgreSQL 컨테이너에서 DB 연결을 검사합니다. Gradle 프로젝트가 있으면 같은 임시 DB로 테스트를 실행하고 빌드가 끝나면 정리합니다.
+`main`과 `develop` 빌드는 임시 PostgreSQL 컨테이너에서 DB 연결을 검사합니다. 같은 임시 DB로 Gradle 테스트와 빌드를 실행하고 빌드가 끝나면 정리합니다.
