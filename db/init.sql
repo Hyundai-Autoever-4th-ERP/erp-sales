@@ -1,0 +1,3 @@
+CREATE ROLE sales_app LOGIN PASSWORD 'sales_local';
+CREATE DATABASE sales_db OWNER sales_app;
+REVOKE CONNECT ON DATABASE sales_db FROM PUBLIC;

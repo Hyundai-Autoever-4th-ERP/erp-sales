@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_PASSWORD: erp_local_admin
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-15435}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/10-service.sql:ro
+volumes:
+  pgdata:
