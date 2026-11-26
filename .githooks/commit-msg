@@ -1,0 +1,24 @@
+#!/bin/sh
+set -eu
+
+message=$(git stripspace --strip-comments < "$1")
+subject=$(printf '%s\n' "$message" | sed -n '1p')
+
+# Merge, Revert, fixup!, squash! 등 Git 자동 생성 커밋은 예외 통과
+case "$subject" in
+    "Merge "*|"Revert "*|"fixup! "*|"squash! "*)
+        exit 0
+        ;;
+esac
+
+# UTF-8로 읽어 터미널 언어 설정과 관계없이 한글을 확인한다.
+if printf '%s\n' "$subject" | perl -CSD -ne 'exit !/^(?:feat|fix|refactor|chore|docs|test): .*\p{Hangul}/'; then
+    exit 0
+fi
+
+cat >&2 <<'MESSAGE'
+커밋 제목은 '말머리: 한글 요약'으로 작성해주세요.
+말머리: feat, fix, refactor, chore, docs, test
+예: feat: 지점 발주 승인 API 구현 (#12)
+MESSAGE
+exit 1

@@ -14,6 +14,8 @@ VPC 안에서 실행하는 서비스는 공용 PostgreSQL RDS의 `sales_db`에 T
 
 ## 내 PC에서 개발할 때
 
+클론 후 이 저장소에서 한 번만 `git config --local core.hooksPath .githooks`를 실행하면 커밋 제목을 팀 규칙에 맞춰 검사합니다. 예: `feat: 재고 조회 기능 구현`.
+
 저장소를 클론한 뒤 루트에서 `docker compose up -d`를 실행하면 로컬 개발 DB가 시작됩니다.
 
 | 접속 항목 | 값 |
